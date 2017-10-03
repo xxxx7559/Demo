@@ -2,7 +2,7 @@
 
    $val= $_POST["val"];
  if($val == "1"){
-   $data = fopen("val.json", "r+");
+   $data = fopen("/Demo/val.json", "r+");
     $dataArr=json_encode(array(   
         
         "nametext"=> $_POST["nametext"],   
