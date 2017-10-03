@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        function saveData() {
+                $.ajax({
+                    url: 'addval.php',
+                    async: false,
+                    type: 'POST',
+                    data: {
+                        val:"1",
+                        nametext : $("#nametext").val(),
+                        mailtext : $("#mailtext").val(),
+                        valtextarea : $("#valtextarea").val()
+                    },
+                    dataType: 'text',
+                    success: function (msg) {
+                        if (msg == "OK") {
+                            $("#val").text("");
+                            $("#nametext").val("");
+                            $("#mailtext").val("");
+                            $("#valtextarea").val("");
+                            getData();
+
+                        };
+
+                    },
+                    error: function (da) {
+                        alert('系統異常!請重新整理再試一次!');
+                    }
+                });
+        };
+        $(function () {
+            var me
+            function fadeToggle(me) {
+                $("div[pu]").fadeToggle(300);
+                $(me).fadeToggle(300);
+            }
+
+            $(".flex2").on("click", function () {
+                me = "div[id=" + $(this).attr("id") + "]"
+                fadeToggle(me);
+            });
+
+            $(".pup-1").on("click", function () {
+                fadeToggle(me);
+            });
+            getData();
+            job();
+        });
+        function getData() {
+            $.getJSON('val.json', function (data) {
+                for (var i = data.length; i > 0; i--) {
+                    $("#val").append("名稱：" + data[i - 1].nametext + "<br>信箱：" + data[i - 1].mailtext + "<br>內容：" + data[i - 1].valtextarea + "<br><hr>");
+                };
+                //$.each(data, function (index, element) {
+                //    //$("#val").append("名稱：" + element.nametext + "<br>信箱：" + element.mailtext + "<br>內容：" + element.valtextarea + "<br><hr>");
+                //});
+            })
+        };
+        function job() {
+            $.getJSON('job.json', function (data) {
+                $.each(data, function (index, element) {
+                    $("#job").append("<div class='pup-3'>公司名稱：" + element.company + "<br>職稱：" + element.title + "<br>工作期間：" + element.Workingyears + "<br>內容：" + element.Workcontent + "</div>");
+                });
+            })
+        };    </script>
+
+    <style>
+        html, body {
+            
+            width: 100%;
+            height: 97.8%;
+            margin: 0;
+            padding: 0;
+            /*background: url(749071.jpg);
+            background-attachment: fixed;
+            background-size: cover;*/
+        }
+
+        .flextop {
+            display: flex;
+            justify-content: center;
+            padding: 1% 5%;
+            height: 100%;
+        }
+
+        .flex-1 {
+            flex-flow: row wrap;
+            justify-content: center;
+            width: 100%;
+            display: flex;
+        }
+
+        .flex1 {
+            width: 33%;
+            height: 50%;
+            flex-grow: 1;
+        }
+
+        .flex2:hover {
+            background: #CCDDFF;
+            -webkit-transition: all 0.4s ease;
+            -moz-transition: all 0.4s ease;
+            -o-transition: all 0.4s ease;
+            transition: all 0.4s ease;
+            -webkit-transform: scale(1.05,1.05);
+            -moz-transform: scale(1.05,1.05);
+            -o-transform: scale(1.05,1.05);
+            transform: scale(1.05,1.05);
+        }
+
+        .pup-1 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 997;
+            display: none;
+        }
+
+        .pup-2 {
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 77%;
+            height: 77%;
+            border-radius: 20px;
+            background-color: white;
+            z-index: 999;
+            padding: 2%;
+            display: none;
+      
+        }
+        .pup-3 {
+            display: inline-flex ;
+            border:1px solid black;
+            height:200px;
+            width:300px;
+        }
+        .photo {
+
+            position: relative;
+        }
+
+            .photo div {
+                top:10px;
+                position: absolute;
+                filter: alpha(opacity=0);
+                -webkit-animation: round 10S linear infinite;
+                animation: round 10s linear infinite;
+                text-align:center;
+                
+            }
+
+        @-webkit-keyframes round {
+            0% {
+                opacity: 1;
+                filter: alpha(opacity=100);
+            }
+
+            40% {
+                opacity: 1;
+                filter: alpha(opacity=100);
+            }
+
+            50% {
+                opacity: 0;
+                filter: alpha(opacity=0);
+            }
+
+            90% {
+                opacity: 0;
+                filter: alpha(opacity=0);
+            }
+
+            100% {
+                opacity: 1;
+                filter: alpha(opacity=100);
+            }
+        }
+
+        @keyframes round {
+            0% {
+                opacity: 1;
+                filter: alpha(opacity=100);
+            }
+
+            40% {
+                opacity: 1;
+                filter: alpha(opacity=100);
+            }
+
+            50% {
+                opacity: 0;
+                filter: alpha(opacity=0);
+            }
+
+            90% {
+                opacity: 0;
+                filter: alpha(opacity=0);
+            }
+
+            100% {
+                opacity: 1;
+                filter: alpha(opacity=100);
+            }
+        }
+
+        .photo div:nth-child(2) {
+            -webkit-animation-delay: 0s;
+            animation-delay: 0s;
+        }
+
+        .photo div:nth-child(1) {
+            -webkit-animation-delay: 5s;
+            animation-delay: 5s;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class="flextop">
+        <div class="flex-1">
+            <div class="flex1 flex2" id="me1">
+                <img src="/749.jpg" alt="自我介紹" width=100% height=100% />
+            </div>
+            <div class="flex1 flex2" id="me2">
+                <img src="/750.jpg" alt="學歷經歷" width=100% height=100% />
+            </div>
+            <div class="flex1 flex2" id="me3">
+                <img src="/750.jpg" alt="專長" width=100% height=100% />
+            </div>
+            <div class="flex1 flex2" id="me4">
+                <img src="/751.jpg" alt="作品集" width=100% height=100% />
+            </div>
+            <div class="flex1 flex2" id="me5">
+                <img src="/751.jpg" alt="與我聯絡" width=100% height=100% />
+            </div>
+        </div>
+    </div>
+    <div class="pup-2" id="me1">
+        <table width="100%"   height="100%" >
+            <tr>
+                <td width=36% class="photo">
+                        <div><img id="photo1" src="/images.jpg" alt="pure css3 slider" width=90% /></div>
+                        <div><img id="photo2" src="/images2.jpg" alt="pure css3 slider" width=90% /></div>
+                </td>
+                <td width="64%">    
+                  
+                    <h1>自我介紹</h1>  
+                    <hr />
+                    您好，我叫童怡焜，出生於一般家庭，個性樂觀開朗且積極負責，在校時為資訊處理系，曾學習並專精Potoshop、illustrator,Visual studio,Office 作業系統等，在班上或畢業中也利用時間進修EXCEL VBA,ASP.NET,Jquery,Html,CSS等，並將所學加以利用於工作，設計小工具&網頁，亦使用過EXCEL+VBA製作些小工具進行日常所需，也因此漸漸喜歡上程式&網頁設計等，現在也在巨匠進修ASP.NET  MVC+Razor  以利考取Microsoft  MCSD證照，未來希望可從事前端工程師、網頁設計、資訊人員等工作，可學以致用並發揮所長，學習並精進各項技能，希望能加入貴司的團隊，互助互補，學習成長，希望有幸能參與貴司的面試，謝謝。
+
+                   
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="pup-2" id="me2">
+        <h1>　學歷經歷</h1>
+        <div>
+            <ul>
+                <li><h2>學歷</h2></li>
+                敝人於2006/06 畢業於 北台科學技術學院(前光武)的資料處理科，就學期間因有幸得老師啟蒙，當時學習的是ASP + Sql，
+                <br />因此對於程式設計種下了濃厚的興趣。
+                <li><h2>經歷</h2></li>
+                從畢業至今已工作約莫8~9年，詳述內容如下：<!--<input type="button" id="jobadd" onclick="jobadd(this)" value="新增" />-->
+                <hr />
+                <table >
+                    <tr >
+                        <td>
+                            <div style="height:200px;width:100% ;overflow-x:auto;" id="job">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </ul>
+        </div>
+    </div>
+    <div class="pup-2" id="me3">專長</div>
+    <div class="pup-2" id="me4">作品</div>
+    <div class="pup-2" id="me5">
+        <table border="1" width=100% height=100%>
+            <tr>
+                <td width=36%>
+                    <div width=100%>
+                        <div><span>名稱：</span><input type="text" id="nametext" /></div>
+                        <div><span>信箱：</span><input type="text" id="mailtext" /></div>
+                        <div><span>內容：</span><textarea id="valtextarea" rows="20" cols="30"></textarea></div>
+                        <div><input type="button" id="buttext" onclick="saveData(this)" value="送出" /></div>
+
+                    </div>
+                </td>
+                <td width="64%" height="100%">
+                    <div id="val" style="width:100%;height:100%; overflow:auto;"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="pup-1" pu=""></div>
+
+</body>
+</html>
